@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, TextInput, StyleSheet, Text } from 'react-native'
+import { View, TextInput, StyleSheet, Text,TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import Button from '../Button'
 import PropTypes from 'prop-types'
@@ -162,8 +162,8 @@ export default class NumericInput extends Component {
         const iconStyle = [style.icon, this.props.iconStyle]
         const totalWidth = this.props.totalWidth
         const totalHeight = this.props.totalHeight ? this.props.totalHeight : (totalWidth * 0.4)
-        const inputWidth = this.props.type === 'up-down' ? (totalWidth * 0.6) : (totalWidth * 0.4)
-        const borderRadiusTotal = totalHeight * 0.18
+        const inputWidth = this.props.type === 'up-down' ? (totalWidth * 0.75) : (totalWidth * 0.4)
+        const borderRadiusTotal = this.props.borderRound//totalHeight * 0.18
         const fontSize = totalHeight * 0.38
         const textColor = this.props.textColor
         const maxReached = this.state.value === this.props.maxValue
@@ -172,9 +172,9 @@ export default class NumericInput extends Component {
             [style.inputContainerUpDown, { width: totalWidth, height: totalHeight, borderColor: borderColor }, this.props.rounded ? { borderRadius: borderRadiusTotal } : {}, this.props.containerStyle] :
             [style.inputContainerPlusMinus, { width: totalWidth, height: totalHeight, borderColor: borderColor }, this.props.rounded ? { borderRadius: borderRadiusTotal } : {}, this.props.containerStyle]
         const inputStyle = this.props.type === 'up-down' ?
-            [style.inputUpDown, { width: inputWidth, height: totalHeight, fontSize: fontSize, color: textColor, borderRightWidth: 2, borderRightColor: borderColor }, this.props.inputStyle] :
+            [style.inputUpDown, { width: inputWidth, height: totalHeight, fontSize: fontSize, color: textColor, borderRightWidth: sepratorWidth, borderRightColor: borderColor }, this.props.inputStyle] :
             [style.inputPlusMinus, { width: inputWidth, height: totalHeight, fontSize: fontSize, color: textColor, borderRightWidth: sepratorWidth, borderLeftWidth: sepratorWidth, borderLeftColor: borderColor, borderRightColor: borderColor }, this.props.inputStyle]
-        const upDownStyle = [{ alignItems: 'center', width: totalWidth - inputWidth, backgroundColor: this.props.upDownButtonsBackgroundColor, borderRightWidth: 1, borderRightColor: borderColor }, this.props.rounded ? { borderTopRightRadius: borderRadiusTotal, borderBottomRightRadius: borderRadiusTotal } : {}]
+        const upDownStyle = [{ alignItems: 'center', width: totalWidth - inputWidth, backgroundColor: this.props.upDownButtonsBackgroundColor, }]
         const rightButtonStyle = [
             {
                 position: 'absolute',
@@ -218,27 +218,41 @@ export default class NumericInput extends Component {
         if (this.props.type === 'up-down')
             return (
                 <View style={inputContainerStyle}>
-                    <TextInput {...this.props.extraTextInputProps} editable={editable} returnKeyType='done' underlineColorAndroid='rgba(0,0,0,0)' keyboardType='numeric' value={this.state.stringValue} onChangeText={this.onChange} style={inputStyle} ref={ref => this.ref = ref} onBlur={this.onBlur} onFocus={this.onFocus} />
-                    <View style={upDownStyle}>
-                        <Button onPress={this.inc} style={{ flex: 1, width: '100%', alignItems: 'center' }}>
-                            <Icon name='ios-arrow-up' size={fontSize} style={[...iconStyle, maxReached ? this.props.reachMaxIncIconStyle : {}, minReached ? this.props.reachMinIncIconStyle : {}]} />
-                        </Button>
-                        <Button onPress={this.dec} style={{ flex: 1, width: '100%', alignItems: 'center' }}>
-                            <Icon name='ios-arrow-down' size={fontSize} style={[...iconStyle, maxReached ? this.props.reachMaxDecIconStyle : {}, minReached ? this.props.reachMinDecIconStyle : {}]} />
-                        </Button>
+                    <View style={{flex:1.5,borderWidth:0}}>
+                        <TextInput {...this.props.extraTextInputProps} editable={editable} returnKeyType='done' underlineColorAndroid='rgba(0,0,0,0)' keyboardType='numeric' value={this.state.stringValue} onChangeText={this.onChange} style={inputStyle} ref={ref => this.ref = ref} onBlur={this.onBlur} onFocus={this.onFocus} />
+                    </View>
+                    <View style={{flex:0.5,borderWidth:0,marginRight:5}}>
+                        <View style={[upDownStyle,{borderWidth:0,marginRight:0,flex:1,}]}>
+                            <View style={{flex:1,flexDirection:"row"}}>
+                                <View style={{flex:1,borderWidth:0,alignItems:"center",justifyContent:"center"}}>
+                                    <View style={{flex:1,borderWidth:0,alignItems:"center",justifyContent:"center",marginRight:1,borderRadius:borderRadiusTotal}}>
+                                        <TouchableOpacity onPress={this.inc} style={{ flex:1,width: '97%', alignItems: 'center',borderWidth:0,justifyContent:"center",margin:1,borderRadius:borderRadiusTotal }} activeOpacity={1}>
+                                            <Icon name='md-add' size={fontSize} style={[...iconStyle, maxReached ? this.props.reachMaxIncIconStyle : {}, minReached ? this.props.reachMinIncIconStyle : {}]} />
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                                <View style={{flex:1,borderWidth:0,alignItems:"center",justifyContent:"center"}}>
+                                    <View style={{flex:1,borderWidth:0,alignItems:"center",justifyContent:"center",marginRight:1,borderRadius:borderRadiusTotal}}>
+                                        <TouchableOpacity onPress={this.dec} style={{ flex: 1, width: '97%', alignItems: 'center',borderWidth:0,justifyContent:"center",margin:1,borderRadius:borderRadiusTotal }} activeOpacity={1}>
+                                            <Icon name='md-remove' size={fontSize} style={[...iconStyle, maxReached ? this.props.reachMaxDecIconStyle : {}, minReached ? this.props.reachMinDecIconStyle : {}]} />
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </View>
+                        </View>
                     </View>
                 </View>)
         else return (
             <View style={inputContainerStyle}>
-                <Button onPress={this.dec} style={leftButtonStyle}>
+                <TouchableOpacity onPress={this.dec} style={leftButtonStyle} activeOpacity={1}>
                     <Icon name='md-remove' size={fontSize} style={[...iconStyle, maxReached ? this.props.reachMaxDecIconStyle : {}, minReached ? this.props.reachMinDecIconStyle : {}]} />
-                </Button>
+                </TouchableOpacity>
                 <View style={[inputWraperStyle]}>
                     <TextInput {...this.props.extraTextInputProps} editable={editable} returnKeyType='done' underlineColorAndroid='rgba(0,0,0,0)' keyboardType='numeric' value={this.state.stringValue} onChangeText={this.onChange} style={inputStyle} ref={ref => this.ref = ref} onBlur={this.onBlur} onFocus={this.onFocus} />
                 </View>
-                <Button onPress={this.inc} style={rightButtonStyle}>
+                <TouchableOpacity onPress={this.inc} style={rightButtonStyle} activeOpacity={1}>
                     <Icon name='md-add' size={fontSize} style={[...iconStyle, maxReached ? this.props.reachMaxIncIconStyle : {}, minReached ? this.props.reachMinIncIconStyle : {}]} />
-                </Button>
+                </TouchableOpacity>
             </View>)
 
 
@@ -265,8 +279,8 @@ const style = StyleSheet.create({
         borderWidth: 1
     },
     inputUpDown: {
-        textAlign: 'center',
-        padding: 0
+        textAlign: "left",
+        marginLeft:4
 
     },
     inputPlusMinus: {
@@ -310,7 +324,8 @@ NumericInput.propTypes = {
     reachMaxDecIconStyle: PropTypes.any,
     reachMinIncIconStyle: PropTypes.any,
     reachMinDecIconStyle: PropTypes.any,
-    extraTextInputProps: PropTypes.any
+    extraTextInputProps: PropTypes.any,
+    borderRound : PropTypes.number,
 }
 NumericInput.defaultProps = {
     iconSize: calcSize(30),
