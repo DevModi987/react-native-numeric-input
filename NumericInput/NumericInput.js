@@ -20,7 +20,20 @@ export default class NumericInput extends Component {
     }
 
     // this.props refers to the new props
-    componentDidUpdate() {
+    // componentDidUpdate() {
+    //     const initSent = !(this.props.initValue !== 0 && !this.props.initValue); 
+
+    //     // compare the new value (props.initValue) with the existing/old one (this.state.value)
+    //     if (this.props.initValue !== this.state.value && initSent) {
+    //         this.setState({
+    //             value: this.props.initValue,
+    //             lastValid: this.props.initValue,
+    //             stringValue: this.props.initValue.toString()
+    //         });
+    //     }
+    // }
+
+    componentDidUpdate(prevProps) {
         const initSent = !(this.props.initValue !== 0 && !this.props.initValue); 
 
         // compare the new value (props.initValue) with the existing/old one (this.state.value)
@@ -31,7 +44,17 @@ export default class NumericInput extends Component {
                 stringValue: this.props.initValue.toString()
             });
         }
+
+
+        if (prevProps.value !== this.props.value) {
+            this.setState({
+                value: this.props.value,
+                lastValid: this.props.value,
+                stringValue: this.props.value.toString()
+            });
+        }
     }
+    
     
     updateBaseResolution = (width, height) => {
         calcSize = create({ width, height })
@@ -222,7 +245,7 @@ export default class NumericInput extends Component {
                         <TextInput {...this.props.extraTextInputProps} editable={editable} returnKeyType='done' underlineColorAndroid='rgba(0,0,0,0)' keyboardType='numeric' value={this.state.stringValue} onChangeText={this.onChange} style={inputStyle} ref={ref => this.ref = ref} onBlur={this.onBlur} onFocus={this.onFocus} />
                     </View>
                     <View style={{flex:0.5,borderWidth:0,marginRight:5}}>
-                        <View style={[upDownStyle,{borderWidth:0,marginRight:0,flex:1,}]}>
+                        <View style={[upDownStyle,{borderWidth:0,marginRight:0,flex:1}]}>
                             <View style={{flex:1,flexDirection:"row"}}>
                                 <View style={{flex:1,borderWidth:0,alignItems:"center",justifyContent:"center"}}>
                                     <View style={{flex:1,borderWidth:0,alignItems:"center",justifyContent:"center",marginRight:1,borderRadius:borderRadiusTotal}}>
