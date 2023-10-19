@@ -195,9 +195,9 @@ export default class NumericInput extends Component {
             [style.inputContainerUpDown, { width: totalWidth, height: totalHeight, borderColor: borderColor }, this.props.rounded ? { borderRadius: borderRadiusTotal } : {}, this.props.containerStyle] :
             [style.inputContainerPlusMinus, { width: totalWidth, height: totalHeight, borderColor: borderColor }, this.props.rounded ? { borderRadius: borderRadiusTotal } : {}, this.props.containerStyle]
         const inputStyle = this.props.type === 'up-down' ?
-            [style.inputUpDown, { width: inputWidth, height: totalHeight, fontSize: fontSize, color: textColor, borderRightWidth: sepratorWidth, borderRightColor: borderColor }, this.props.inputStyle] :
+            [style.inputUpDown, { borderWidth:1,width: inputWidth, height: totalHeight, fontSize: fontSize, color: textColor, borderRightWidth: sepratorWidth, borderRightColor: borderColor }, this.props.inputStyle] :
             [style.inputPlusMinus, { width: inputWidth, height: totalHeight, fontSize: fontSize, color: textColor, borderRightWidth: sepratorWidth, borderLeftWidth: sepratorWidth, borderLeftColor: borderColor, borderRightColor: borderColor }, this.props.inputStyle]
-        const upDownStyle = [{ alignItems: 'center', width: totalWidth - inputWidth, backgroundColor: this.props.upDownButtonsBackgroundColor, }]
+        const upDownStyle = [{ alignItems: 'center', backgroundColor: this.props.upDownButtonsBackgroundColor, }]
         const rightButtonStyle = [
             {
                 position: 'absolute',
@@ -241,22 +241,22 @@ export default class NumericInput extends Component {
         if (this.props.type === 'up-down')
             return (
                 <View style={inputContainerStyle}>
-                    <View style={{flex:1.5,borderWidth:0}}>
+                    <View style={{flex:1.2,borderBottomWidth:1,borderColor:borderColor}}>
                         <TextInput {...this.props.extraTextInputProps} editable={editable} returnKeyType='done' underlineColorAndroid='rgba(0,0,0,0)' keyboardType='numeric' value={this.state.stringValue} onChangeText={this.onChange} style={inputStyle} ref={ref => this.ref = ref} onBlur={this.onBlur} onFocus={this.onFocus} />
                     </View>
-                    <View style={{flex:0.5,borderWidth:0,marginRight:5}}>
+                    <View style={{flex:0.8,borderWidth:0,margin:0,borderRadius:borderRadiusTotal}}>
                         <View style={[upDownStyle,{borderWidth:0,marginRight:0,flex:1}]}>
-                            <View style={{flex:1,flexDirection:"row"}}>
-                                <View style={{flex:1,borderWidth:0,alignItems:"center",justifyContent:"center"}}>
+                            <View style={{flex:1,flexDirection:"row",borderWidth:0}}>
+                                <View style={{flex:1,borderWidth:1,alignItems:"center",justifyContent:"center",marginTop:0,marginBottom:0,marginLeft:1,marginRight:1,borderRadius:borderRadiusTotal,borderColor:borderColor}}>
                                     <View style={{flex:1,borderWidth:0,alignItems:"center",justifyContent:"center",marginRight:1,borderRadius:borderRadiusTotal}}>
-                                        <TouchableOpacity onPress={this.inc} style={{ flex:1,width: '97%', alignItems: 'center',borderWidth:0,justifyContent:"center",margin:1,borderRadius:borderRadiusTotal }} activeOpacity={1}>
+                                        <TouchableOpacity onPress={this.inc} style={{ flex:1,width: '100%', alignItems: 'center',borderWidth:0,justifyContent:"center",margin:0,borderRadius:borderRadiusTotal }} activeOpacity={0.6}>
                                             <Icon name='md-add' size={fontSize} style={[...iconStyle, maxReached ? this.props.reachMaxIncIconStyle : {}, minReached ? this.props.reachMinIncIconStyle : {}]} />
                                         </TouchableOpacity>
                                     </View>
                                 </View>
-                                <View style={{flex:1,borderWidth:0,alignItems:"center",justifyContent:"center"}}>
+                                <View style={{flex:1,borderWidth:1,alignItems:"center",justifyContent:"center",marginTop:0,marginBottom:0,marginLeft:1,marginRight:1,borderRadius:borderRadiusTotal,borderColor:borderColor}}>
                                     <View style={{flex:1,borderWidth:0,alignItems:"center",justifyContent:"center",marginRight:1,borderRadius:borderRadiusTotal}}>
-                                        <TouchableOpacity onPress={this.dec} style={{ flex: 1, width: '97%', alignItems: 'center',borderWidth:0,justifyContent:"center",margin:1,borderRadius:borderRadiusTotal }} activeOpacity={1}>
+                                        <TouchableOpacity onPress={this.dec} style={{ flex: 1, width: '100%', alignItems: 'center',borderWidth:0,justifyContent:"center",margin:0,borderRadius:borderRadiusTotal }} activeOpacity={0.6}>
                                             <Icon name='md-remove' size={fontSize} style={[...iconStyle, maxReached ? this.props.reachMaxDecIconStyle : {}, minReached ? this.props.reachMinDecIconStyle : {}]} />
                                         </TouchableOpacity>
                                     </View>
@@ -291,7 +291,6 @@ const style = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-
         borderColor: 'grey',
         borderWidth: 1
     },
@@ -304,7 +303,6 @@ const style = StyleSheet.create({
     inputUpDown: {
         textAlign: "left",
         marginLeft:4
-
     },
     inputPlusMinus: {
         textAlign: 'center',
